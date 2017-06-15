@@ -1,10 +1,13 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:edit, :update, :new, :create]
+  before_action :require_user, only: [:edit, :update, :destroy]
 
   # GET /articles
   # GET /articles.json
   def index
     @articles = Article.all
+    byebug
   end
 
   # GET /articles/1
@@ -25,6 +28,7 @@ class ArticlesController < ApplicationController
   # POST /articles.json
   def create
     @article = Article.new(article_params)
+    @article.user = current_user
 
     respond_to do |format|
       if @article.save
