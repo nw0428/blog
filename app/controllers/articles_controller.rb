@@ -1,13 +1,12 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only: [:edit, :update, :new, :create]
+  before_action :set_article, only: [:show, :edit, :update, :destroy, :star]
+  before_action :authenticate_user!, only: [:edit, :update, :new, :create, :star]
   before_action :require_user, only: [:edit, :update, :destroy]
 
   # GET /articles
   # GET /articles.json
   def index
     @articles = Article.all
-    byebug
   end
 
   # GET /articles/1
@@ -62,6 +61,16 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to articles_url, notice: 'Article was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def star
+    if params[:type] == "star"
+      @article.likes << Like.new(article: @article, user: current_user)
+      redirect_to @article, notice: "liked"
+    else
+      @article.likers.delete(current_user)
+      redirect_to @article, notice: "unliked"
     end
   end
 

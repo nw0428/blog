@@ -1,4 +1,11 @@
 <p id="notice"><%= notice %></p>
+<% if current_user %>
+  <% if Like.exists?({article: @article, user: current_user}) %>
+    <%= link_to "unstar", star_article_path(@article, type: "unstar"), method: :put, remote: true %>
+  <% else %>
+    <%= link_to "star", star_article_path(@article, type: "star"), method: :put, remote: true %>
+  <% end %>
+<% end %>
 
 <p>
   <strong>Title:</strong>

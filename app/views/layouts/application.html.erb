@@ -9,8 +9,6 @@
   </head>
 
   <body>
-    <p class="notice"><blink><%= notice %></blink></p>
-    <p class="alert"><blink><%= alert %></blink></p>
     <div class="login-out" >
     <% if user_signed_in? %>
     <%= link_to 'Log Out', destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' } %>
